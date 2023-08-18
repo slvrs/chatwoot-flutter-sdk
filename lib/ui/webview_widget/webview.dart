@@ -15,6 +15,9 @@ class Webview extends StatefulWidget {
   /// Url for Chatwoot widget in webview
   late final String widgetUrl;
 
+  /// Url widget url
+  late final String widgetBaseUrlPattern;
+
   /// Chatwoot user & locale initialisation script
   late final String injectedJavaScript;
 
@@ -48,6 +51,7 @@ class Webview extends StatefulWidget {
       : super(key: key) {
     widgetUrl =
         "${baseUrl}/widget?website_token=${websiteToken}&locale=${locale}";
+    widgetBaseUrlPattern = "${baseUrl}/widget";
 
     injectedJavaScript = generateScripts(
         user: user, locale: locale, customAttributes: customAttributes);
@@ -86,6 +90,9 @@ class _WebviewState extends State<Webview> {
               },
               onWebResourceError: (WebResourceError error) {},
               onNavigationRequest: (NavigationRequest request) {
+                if (request.url.startsWith(widget.widgetBaseUrlPattern)) {
+                  return NavigationDecision.navigate;
+                }
                 _goToUrl(request.url);
                 return NavigationDecision.prevent;
               },
