@@ -40,17 +40,30 @@ class ChatwootUser extends Equatable {
   @HiveField(5)
   final dynamic customAttributes;
 
-  ChatwootUser(
-      {this.identifier,
-      this.identifierHash,
-      this.name,
-      this.email,
-      this.avatarUrl,
-      this.customAttributes});
+  @JsonKey(name: "phone_number")
+  @HiveField(6)
+  final String? phoneNumber;
+
+  ChatwootUser({
+    this.identifier,
+    this.identifierHash,
+    this.name,
+    this.email,
+    this.avatarUrl,
+    this.customAttributes,
+    this.phoneNumber,
+  });
 
   @override
-  List<Object?> get props =>
-      [identifier, identifierHash, name, email, avatarUrl, customAttributes];
+  List<Object?> get props => [
+        identifier,
+        identifierHash,
+        name,
+        email,
+        avatarUrl,
+        customAttributes,
+        phoneNumber,
+      ];
 
   factory ChatwootUser.fromJson(Map<String, dynamic> json) =>
       _$ChatwootUserFromJson(json);
