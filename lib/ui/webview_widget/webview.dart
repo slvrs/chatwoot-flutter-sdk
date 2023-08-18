@@ -136,6 +136,6 @@ class _WebviewState extends State<Webview> {
   }
 
   _goToUrl(String url) {
-    launchUrl(Uri.parse(url));
+    launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
   }
 }
