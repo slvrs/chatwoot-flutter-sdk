@@ -20,8 +20,6 @@ to your project's [pubspec.yml](https://flutter.dev/docs/development/tools/pubsp
 
 ## 2. How to use
 
-### a. Using ChatwootWidget
-
 * Create a website channel in chatwoot server by following the steps described here https://www.chatwoot.com/docs/channels/website
 * Replace websiteToken prop and baseUrl
 
@@ -147,70 +145,3 @@ Horray! You're done.
 | onLoadStarted    | -       | void Function()                 | Widget load start event                                                                                |
 | onLoadProgress   | -       | void Function(int)              | Widget Load progress event                                                                             |
 | onLoadCompleted  | -       | void Function()                 | Widget Load completed event                                                                            |
-
-### b. Using Chatwoot Client
-* Create an Api inbox in Chatwoot. Refer to [Create API Channel](https://www.chatwoot.com/docs/product/channels/api/create-channel) document.
-* Create your own customized chat ui and use `ChatwootClient` to load and sendMessages. Messaging events like `onMessageSent` and `onMessageReceived` will be triggered on `ChatwootCallback` argument passed when creating the client instance.
-
-
-NB: This chatwoot client uses [Hive](https://pub.dev/packages/hive) for local storage.
-
-```dart
-final chatwootCallbacks = ChatwootCallbacks(
-      onWelcome: (){
-        print("on welcome");
-      },
-      onPing: (){
-        print("on ping");
-      },
-      onConfirmedSubscription: (){
-        print("on confirmed subscription");
-      },
-      onConversationStartedTyping: (){
-        print("on conversation started typing");
-      },
-      onConversationStoppedTyping: (){
-        print("on conversation stopped typing");
-      },
-      onPersistedMessagesRetrieved: (persistedMessages){
-        print("persisted messages retrieved");
-      },
-      onMessagesRetrieved: (messages){
-        print("messages retrieved");
-      },
-      onMessageReceived: (chatwootMessage){
-        print("message received");
-      },
-      onMessageDelivered: (chatwootMessage, echoId){
-        print("message delivered");
-      },
-      onMessageSent: (chatwootMessage, echoId){
-        print("message sent");
-      },
-      onError: (error){
-        print("Ooops! Something went wrong. Error Cause: ${error.cause}");
-      },
-    );
-
-    ChatwootClient.create(
-        baseUrl: widget.baseUrl,
-        inboxIdentifier: widget.inboxIdentifier,
-        user: widget.user,
-        enablePersistence: widget.enablePersistence,
-        callbacks: chatwootCallbacks
-    ).then((client) {
-        client.loadMessages();
-    }).onError((error, stackTrace) {
-      print("chatwoot client creation failed with error $error: $stackTrace");
-    });
-```
-
-#### Available Parameters
-
-| Name              | Default | Type              | Description                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|-------------------|---------|-------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| baseUrl           | -       | String            | Installation url for chatwoot                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| inboxIdentifier   | -       | String            | Identifier for target chatwoot inbox                                                                                                                                                                                                                                                                                                                                                                                                               |
-| enablePersistance | true    | bool              | Enables persistence of chatwoot client instance's contact, conversation and messages to disk <br>for convenience.<br>true - persists chatwoot client instance's data(contact, conversation and messages) to disk. To clear persisted <br>data call ChatwootClient.clearData or ChatwootClient.clearAllData<br>false - holds chatwoot client instance's data in memory and is cleared as<br>soon as chatwoot client instance is disposed<br>Setting |
-| user              | null    | ChatwootUser      | Custom user details to be attached to chatwoot contact                                                                                                                                                                                                                                                                                                                                                                                             |
-| callbacks         | null    | ChatwootCallbacks | Callbacks for handling chatwoot events                                                                                                                                                                                                                                                                                                                                                                                                             |
